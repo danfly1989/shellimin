@@ -54,6 +54,8 @@ void	ft_list_to_env_array(t_dat *data)
 	int		count;
 	t_va	*cur;
 
+	if (data->evs)
+		ft_free_string_array(data->evs);
 	i = 0;
 	data->tmp1 = NULL;
 	count = ft_count_list(data->ev);

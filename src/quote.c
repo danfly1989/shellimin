@@ -18,11 +18,11 @@ void	ft_strip_surrounding_quotes(char *s)
 	size_t	j;
 
 	len = ft_strlen(s);
-	if (len >= 2 && ((s[0] == '"' && s[len - 1] != '"') 
-			|| (s[0] == '\'' && s[len - 1] != '\'')))
+	if (len >= 2 && ((s[0] == '"' && s[len - 1] != '"') || 
+			(s[0] == '\'' && s[len - 1] != '\'')))
 		return ;
-	if (len >= 2 && ((s[0] == '"' && s[len - 1] == '"')
-			|| (s[0] == '\'' && s[len - 1] == '\'')))
+	if (len >= 2 && ((s[0] == '"' && s[len - 1] == '"') || 
+			(s[0] == '\'' && s[len - 1] == '\'')))
 	{
 		j = 1;
 		while (j < len - 1)
@@ -43,11 +43,11 @@ void	ft_strip_quotes_after_equal(char *s)
 
 	eq = ft_strchr(s, '=');
 	len = ft_strlen(s);
-	if (eq && ((eq[1] == '"' && s[len - 1] != '"') || (eq[1] == '\'' && s[len
-					- 1] != '\'')))
+	if (eq && ((eq[1] == '"' && s[len - 1] != '"') || (eq[1] == '\'' 
+				&& s[len - 1] != '\'')))
 		return ;
-	if (eq && ((eq[1] == '"' && s[len - 1] == '"') || (eq[1] == '\'' && s[len
-					- 1] == '\'')))
+	if (eq && ((eq[1] == '"' && s[len - 1] == '"') || (eq[1] == '\'' 
+				&& s[len - 1] == '\'')))
 	{
 		quote = eq[1];
 		j = 0;
