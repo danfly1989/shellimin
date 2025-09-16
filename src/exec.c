@@ -59,3 +59,30 @@ void	ft_exec_command(t_dat *d, char **cmd)
 	perror("execve");
 	exit(1);
 }
+
+void	ft_external_functions(t_dat *data, char *line)
+{
+	char	***cmd;
+
+	(void)line;
+	if (!data || !data->xln || !data->xln[0])
+		return ;
+	if (!ft_validate_syntax(data->xln))
+		return ;
+	ft_list_to_env_array(data);
+	data->no_pipes = ft_count_pipes(data->xln);
+	if (!data->no_pipes && !ft_count_redirections(data->xln))
+	{
+		if (ft_all_valid_lvar(data, data->xln))
+			ft_update_local_variables(data);
+		if (ft_handle_builtin(data, data->st))
+			return ;
+	}
+	cmd = ft_parse_cmd(data, 0, 0, 0);
+	if (!cmd)
+		return ;
+	ft_execute_pipeline(data, cmd);
+	ft_clean_cmd(cmd);
+	ft_free_string_array(data->evs);
+	data->evs = NULL;
+}
