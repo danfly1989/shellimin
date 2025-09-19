@@ -12,17 +12,58 @@
 
 #include "minishell.h"
 
+void	ft_strip_within_str(char *str, size_t len)
+{
+	size_t	i;
+	size_t	j;
+	size_t	start;
+	size_t	end;
+	char	ret[len + 1];
+	char	quote;
+
+	i = 0;
+	j = 0;
+	while (i < len && str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			quote = str[i];
+			start = i + 1;
+			end = start;
+			while (end < len && str[end] != quote)
+				end++;
+			if (end < len && str[end] == quote)
+			{
+				while (start < end)
+					ret[j++] = str[start++];
+				i = end + 1;
+			}
+			else
+				ret[j++] = str[i++];
+		}
+		else
+			ret[j++] = str[i++];
+	}
+	ret[j] = '\0';
+	i = 0;
+	while (i <= j)
+	{
+		str[i] = ret[i];
+		i++;
+	}
+}
+
 void	ft_strip_surrounding_quotes(char *s)
 {
 	size_t	len;
 	size_t	j;
 
 	len = ft_strlen(s);
-	if (len >= 2 && ((s[0] == '"' && s[len - 1] != '"') || 
-			(s[0] == '\'' && s[len - 1] != '\'')))
+	if (len >= 2 && ((s[0] == '"' && s[len - 1] != '"') || (s[0] == '\''
+				&& s[len - 1] != '\'')))
 		return ;
-	if (len >= 2 && ((s[0] == '"' && s[len - 1] == '"') || 
-			(s[0] == '\'' && s[len - 1] == '\'')))
+	if (len >= 2 && ((s[0] == '"' && s[len - 1] == '"') || (s[0] == '\''
+				&& s[len - 1] == '\'')))
 	{
 		j = 1;
 		while (j < len - 1)
@@ -43,11 +84,11 @@ void	ft_strip_quotes_after_equal(char *s)
 
 	eq = ft_strchr(s, '=');
 	len = ft_strlen(s);
-	if (eq && ((eq[1] == '"' && s[len - 1] != '"') || (eq[1] == '\'' 
-				&& s[len - 1] != '\'')))
+	if (eq && ((eq[1] == '"' && s[len - 1] != '"') || (eq[1] == '\'' && s[len
+				- 1] != '\'')))
 		return ;
-	if (eq && ((eq[1] == '"' && s[len - 1] == '"') || (eq[1] == '\'' 
-				&& s[len - 1] == '\'')))
+	if (eq && ((eq[1] == '"' && s[len - 1] == '"') || (eq[1] == '\'' && s[len
+				- 1] == '\'')))
 	{
 		quote = eq[1];
 		j = 0;
@@ -73,6 +114,7 @@ void	ft_strip_quotes_from_xln(t_dat *d)
 		{
 			ft_strip_surrounding_quotes(d->xln[i]);
 			ft_strip_quotes_after_equal(d->xln[i]);
+			ft_strip_within_str(d->xln[i], ft_strlen(d->xln[i]));
 		}
 		i++;
 	}
