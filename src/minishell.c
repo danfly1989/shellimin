@@ -12,6 +12,34 @@
 
 #include "minishell.h"
 
+void	ft_remove_empty_str(char **arr)
+{
+	size_t	i;
+	size_t	k;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		if (arr[i][0] == '\0')
+		{
+			free(arr[i]);
+			arr[i] = NULL;
+			k = i;
+			while (arr[k + 1])
+			{
+				arr[i] = arr[k + 1];
+				arr[k + 1] = NULL;
+				k++;
+			}
+			i++;
+		}
+		else
+			i++;
+	}
+}
+
 void	ft_export_error(char *arg, char *message)
 {
 	write(2, "export: '", 9);
@@ -25,6 +53,7 @@ void	ft_export_error(char *arg, char *message)
 void	ft_check_var_assign_and_expand_line_ext(t_dat *data, char *line)
 {
 	ft_strip_quotes_from_xln(data);
+	ft_remove_empty_str(data->xln);
 	ft_external_functions(data, line);
 	if (data->qtypes)
 	{
